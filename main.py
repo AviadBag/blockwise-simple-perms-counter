@@ -1,6 +1,6 @@
 from typing import List
 
-N = 7
+N = 15
 SIMPLE_PERMS_COUNT = {
     1: 0,
     2: 0,
@@ -20,7 +20,7 @@ SIMPLE_PERMS_COUNT = {
 }
 BLOCKWISE_PERMS_COUNT = {
     1: 1,
-    2: 2,
+    2: 0,
     3: 0,
     4: 2,
     5: 6,
@@ -57,18 +57,19 @@ def set_to_comp(s: List[int]) -> List[int]:
 
     first = 0
     second = s[0]
-    for i in range(len(s) - 1):
+    for i in range(len(s)):
         comp.append(second - first)
         first = second
-        second = s[i + 1]
 
-    comp.append(N - second)
+        try:
+            second = s[i + 1]
+        except IndexError:
+            comp.append(N - first)
 
     return comp
 
 
-def main():
-    print(f"---------- Running for N={N} ----------")
+def generate_compositions() -> List[List[int]]:
     no_of_comps = 1 << (N - 1)  # 2 ** (N-1)
     print(f"There are {no_of_comps} compositions")
 
@@ -77,7 +78,31 @@ def main():
         s = bin_to_set(c)
         comp = set_to_comp(s)
         comps.append(comp)
-        print(f"C={bin(c)[2:].zfill(N - 1)} ({c}), Set={s}, Composition={comp}")
+
+    return comps
+
+
+def count_blockwise_simp_perms() -> int:
+    comps = generate_compositions()
+
+    # Run from 4 to N
+    count = 0
+    for l in range(4, N + 1):
+        # Run on every composition whose size is l
+        for comp in [comp for comp in comps if len(comp) == l]:
+            t = 1
+            for lam in comp:
+                t *= BLOCKWISE_PERMS_COUNT[lam]
+
+            t *= SIMPLE_PERMS_COUNT[l]
+            count += t
+
+    return count
+
+
+def main():
+    print(f"---------- Running for N={N} ----------")
+    print(f"Result is {count_blockwise_simp_perms()}")
 
 
 if __name__ == '__main__':
