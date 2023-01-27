@@ -1,6 +1,7 @@
 from typing import List
+from math import factorial
 
-N = 15
+N = 23
 SIMPLE_PERMS_COUNT = {
     1: 0,
     2: 0,
@@ -16,7 +17,15 @@ SIMPLE_PERMS_COUNT = {
     12: 43286526,
     13: 583835650,
     14: 8433987582,
-    15: 129941213186
+    15: 129941213186,
+    16:	2127349165822,
+    17:	36889047574274,
+    18:	675548628690430,
+    19:	13030733384956418,
+    20:	264111424634864638,
+    21:	5612437196153963522,
+    22:	124789500579376435198,
+    23:	2897684052921851965442,
 }
 BLOCKWISE_PERMS_COUNT = {
     1: 1,
@@ -33,7 +42,15 @@ BLOCKWISE_PERMS_COUNT = {
     12: 44471970,
     13: 597510374,
     14: 8601860622,
-    15: 132135606242
+    15: 132135606242,
+    16: 2157890826922,
+    17: 37341356122958,
+    18: 682667860168678,
+    19: 13149634739087514,
+    20: 266214445664708722,
+    21: 5651742229687495926,
+    22: 125563945268968794302,
+    23: 2913733065746750165458,
 }
 
 
@@ -102,7 +119,10 @@ def count_blockwise_simp_perms() -> int:
 
 def main():
     print(f"---------- Running for N={N} ----------")
-    print(f"Result is {count_blockwise_simp_perms()}")
+
+    result = count_blockwise_simp_perms()
+    print(f"Result = {(result)}")
+    print(f"(Result - simple[{N}]) / n! = {(result - SIMPLE_PERMS_COUNT[N]) / factorial(N)}")
 
 
 if __name__ == '__main__':
